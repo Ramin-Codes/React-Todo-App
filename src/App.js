@@ -20,7 +20,7 @@ function App() {
 
     setTodos([
       {
-        id: todos.length ? todos[0].id + 1 : 1,
+        id: todos.length + 1,
         text: todoText ,
         done: false
       },
@@ -35,6 +35,7 @@ function App() {
   /*----------HandleCheckbox----------*/
   const handleCheckbox = useCallback((todo, index) => () => {
     const newTodos = [...todos]
+
     newTodos.splice(index, 1, {
       ...todo,
       done: !todo.done
@@ -61,6 +62,16 @@ function App() {
 
 
 
+/*----------RemoveMarkAllDone----------*/
+const removeMarkAllDone = useCallback(() => {
+  console.log('asfklhaklsdbjlfgblh')
+  setTodos(todos.map(todoItem => ({
+    ...todoItem,
+    done: false
+  })))
+}, [todos])
+
+
 
   return (
     <div id='app'>
@@ -71,22 +82,18 @@ function App() {
         <button>Add Todo</button>
       </form>
 
-      {/*----------Todos----------*/}
+      {/*----------Buttons----------*/}
       <button onClick={markAllDone}>Mark All Done</button>
+      <button onClick={removeMarkAllDone}>Remove All Marks</button>
+
+      {/*----------Todos----------*/}
       <ul>
         {
           todos?.map((todo, index) => {
             return (
               <li key={todo.id}>
-
                 <p style={{ textDecoration: todo.done && 'line-through'}}>{todo.text}</p>
-
-                <input 
-                  type="checkbox" 
-                  checked={todo.done} 
-                  onChange={handleCheckbox(todo, index)}
-                />
-                
+                <input type="checkbox" checked={todo.done} onChange={handleCheckbox(todo, index)} />
                 <button onClick={removeTodo(todo)}>remove</button>
               </li>
             )
